@@ -1,32 +1,62 @@
-// LLM Prompt Defense - Content Script
-// This script monitors ChatGPT inputs and analyzes them for security threats
+// LLM Prompt Defense - Content Script v3.1
+// Enhanced with better extension context handling
 
 (function() {
   'use strict';
   
-  console.log("LLM Prompt Defense v2.0 - Starting...");
+  console.log("LLM Prompt Defense v3.1 - Starting...");
 
   const CONFIG = {
-    MIN_PROMPT_LENGTH: 5,
+    MIN_PROMPT_LENGTH: 1,  // Changed from 5 to 1 to capture all messages
     TOAST_DURATION: 4500,
-    ANALYSIS_TIMEOUT: 12000
+    ANALYSIS_TIMEOUT: 12000,
+    MAX_RETRY_ATTEMPTS: 3,
+    RETRY_DELAY: 1000
   };
 
-  // Check if extension context is valid
+  let isProcessing = false;
+  let allowNextSend = false;
+  let initAttempts = 0;
+
+  // Enhanced extension validity check
   function isExtensionValid() {
     try {
+      // Check if we're in a proper browser context
+      if (typeof window === 'undefined') {
+        console.error("[Extension Check] No window object");
+        return false;
+      }
+
+      // Check if chrome API exists
       if (typeof chrome === 'undefined') {
         console.error("[Extension Check] chrome is undefined");
         return false;
       }
+
+      // Check if runtime exists
       if (!chrome.runtime) {
         console.error("[Extension Check] chrome.runtime is undefined");
         return false;
       }
+
+      // Check if we have an extension ID
       if (!chrome.runtime.id) {
         console.error("[Extension Check] chrome.runtime.id is undefined");
         return false;
       }
+
+      // Try to access manifest as a final check
+      try {
+        const manifest = chrome.runtime.getManifest();
+        if (!manifest) {
+          console.error("[Extension Check] Cannot access manifest");
+          return false;
+        }
+      } catch (e) {
+        console.error("[Extension Check] Manifest access failed:", e);
+        return false;
+      }
+
       return true;
     } catch (e) {
       console.error("[Extension Check] Exception:", e);
@@ -34,20 +64,52 @@
     }
   }
 
-  // Safe message sender
-  function sendMessageSafe(message, callback) {
+  // Wait for extension context with retry
+  async function waitForExtensionContext(maxAttempts = 5) {
+    for (let i = 0; i < maxAttempts; i++) {
+      if (isExtensionValid()) {
+        console.log(`[Wait] Extension context ready (attempt ${i + 1})`);
+        return true;
+      }
+      console.warn(`[Wait] Extension context not ready, attempt ${i + 1}/${maxAttempts}`);
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+    return false;
+  }
+
+  // Safe message sender with retries
+  function sendMessageSafe(message, callback, retryCount = 0) {
     if (!isExtensionValid()) {
       console.error("[sendMessageSafe] Extension context invalid!");
+      if (retryCount < CONFIG.MAX_RETRY_ATTEMPTS) {
+        console.log(`[sendMessageSafe] Retrying... (${retryCount + 1}/${CONFIG.MAX_RETRY_ATTEMPTS})`);
+        setTimeout(() => {
+          sendMessageSafe(message, callback, retryCount + 1);
+        }, CONFIG.RETRY_DELAY);
+        return;
+      }
       showReloadWarning();
-      if (callback) callback({ ok: false, error: "Extension context invalid" });
+      if (callback) callback({ ok: false, error: "Extension context invalid after retries" });
       return;
     }
 
     try {
       chrome.runtime.sendMessage(message, function(response) {
         if (chrome.runtime.lastError) {
-          console.error("[sendMessageSafe] Runtime error:", chrome.runtime.lastError.message);
-          if (callback) callback({ ok: false, error: chrome.runtime.lastError.message });
+          const error = chrome.runtime.lastError.message;
+          console.error("[sendMessageSafe] Runtime error:", error);
+          
+          // Retry on specific errors
+          if (retryCount < CONFIG.MAX_RETRY_ATTEMPTS && 
+              (error.includes("Extension context") || error.includes("message port"))) {
+            console.log(`[sendMessageSafe] Retrying due to error... (${retryCount + 1}/${CONFIG.MAX_RETRY_ATTEMPTS})`);
+            setTimeout(() => {
+              sendMessageSafe(message, callback, retryCount + 1);
+            }, CONFIG.RETRY_DELAY);
+            return;
+          }
+          
+          if (callback) callback({ ok: false, error: error });
         } else {
           if (callback) callback(response || { ok: false, error: "No response" });
         }
@@ -64,7 +126,23 @@
     
     const banner = document.createElement('div');
     banner.id = 'llm-defense-reload-warning';
-    banner.innerHTML = '<div style="position: fixed; top: 20px; right: 20px; background: #dc2626; color: white; padding: 16px 20px; border-radius: 8px; z-index: 9999999; font-family: system-ui, -apple-system, sans-serif; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); max-width: 350px;"><strong>Extension Context Lost</strong><br><div style="margin-top: 8px;">The LLM Defense extension was reloaded.<br><strong style="color: #fef3c7;">Please refresh this page (Ctrl+R)</strong></div></div>';
+    banner.innerHTML = `
+      <div style="position: fixed; top: 20px; right: 20px; background: #dc2626; color: white; 
+                  padding: 16px 20px; border-radius: 8px; z-index: 9999999; 
+                  font-family: system-ui, -apple-system, sans-serif; font-size: 14px; 
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.3); max-width: 350px;">
+        <strong>⚠️ Extension Context Lost</strong><br>
+        <div style="margin-top: 8px;">
+          The LLM Defense extension needs to reconnect.<br>
+          <strong style="color: #fef3c7;">Please refresh this page (Ctrl+R)</strong>
+        </div>
+        <button onclick="location.reload()" 
+                style="margin-top: 12px; background: white; color: #dc2626; border: none; 
+                       padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+          Refresh Now
+        </button>
+      </div>
+    `;
     document.body.appendChild(banner);
   }
 
@@ -78,10 +156,19 @@
     style.textContent = '@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }';
     document.head.appendChild(style);
     
-    indicator.innerHTML = '<div style="position: fixed; top: 20px; left: 20px; background: rgba(16, 185, 129, 0.95); color: white; padding: 10px 16px; border-radius: 8px; z-index: 999999; font-family: system-ui, -apple-system, sans-serif; font-size: 13px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 8px; border: 2px solid rgba(255,255,255,0.3);"><span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; animation: pulse 2s infinite;"></span><strong>LLM Defense Active</strong></div>';
+    indicator.innerHTML = `
+      <div style="position: fixed; top: 20px; left: 20px; background: rgba(16, 185, 129, 0.95); 
+                  color: white; padding: 10px 16px; border-radius: 8px; z-index: 999999; 
+                  font-family: system-ui, -apple-system, sans-serif; font-size: 13px; 
+                  box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: flex; align-items: center; 
+                  gap: 8px; border: 2px solid rgba(255,255,255,0.3);">
+        <span style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; 
+                     box-shadow: 0 0 8px #10b981; animation: pulse 2s infinite;"></span>
+        <strong>🛡️ LLM Defense Active</strong>
+      </div>
+    `;
     document.body.appendChild(indicator);
 
-    // Auto-hide after 5 seconds
     setTimeout(() => {
       if (indicator.parentNode) {
         indicator.style.transition = 'opacity 0.5s';
@@ -91,29 +178,36 @@
     }, 5000);
   }
 
-  // Initialize
-  function initialize() {
-    console.log("[Initialize] Checking extension context...");
+  // Initialize with retry logic
+  async function initialize() {
+    initAttempts++;
+    console.log(`[Initialize] Attempt ${initAttempts} - Checking extension context...`);
     
-    if (!isExtensionValid()) {
-      console.error("[Initialize] Extension context is INVALID");
-      console.error("[Initialize] This means the extension was reloaded while this page was open");
-      console.error("[Initialize] >>> SOLUTION: Refresh this page (Ctrl+R) <<<");
+    // Wait for extension context
+    const contextReady = await waitForExtensionContext();
+    
+    if (!contextReady) {
+      console.error("[Initialize] Extension context is NOT available after waiting");
+      console.error("[Initialize] Possible causes:");
+      console.error("  1. Extension was reloaded - SOLUTION: Refresh this page (Ctrl+R)");
+      console.error("  2. Extension is disabled - SOLUTION: Enable in chrome://extensions");
+      console.error("  3. manifest.json has errors - SOLUTION: Check extension setup");
       showReloadWarning();
       return;
     }
 
-    console.log("[Initialize] Extension context is valid");
+    console.log("[Initialize] Extension context is VALID ✓");
     console.log("[Initialize] Extension ID:", chrome.runtime.id);
 
-    // Test connection to background script
+    // Test background script connection
     sendMessageSafe({ type: "PING" }, function(response) {
       if (response && response.ok) {
-        console.log("[Initialize] Background script connected");
+        console.log("[Initialize] Background script connected ✓");
         startMonitoring();
       } else {
         console.warn("[Initialize] Background script not responding:", response?.error);
-        startMonitoring(); // Start anyway
+        console.warn("[Initialize] Starting monitoring anyway (backend might not be ready yet)");
+        startMonitoring();
       }
     });
   }
@@ -143,15 +237,12 @@
   // Find send button
   function findSendButton() {
     try {
-      // Method 1: data-testid
       let btn = document.querySelector('button[data-testid="send-button"]');
       if (btn) return btn;
 
-      // Method 2: aria-label
       const buttons = document.querySelectorAll('button');
       for (const button of buttons) {
         if (!button.offsetParent) continue;
-        
         const label = button.getAttribute('aria-label');
         if (label && label.toLowerCase().includes('send')) {
           return button;
@@ -195,21 +286,27 @@
   async function analyzePrompt(text) {
     if (!isExtensionValid()) {
       console.error("[analyzePrompt] Extension invalid");
-      return { ok: false, action: "ALLOW" };
+      return { ok: true, data: { defense_action: "ALLOW", classification: "EXTENSION_INVALID" } };
     }
 
-    if (!text || text.length < CONFIG.MIN_PROMPT_LENGTH) {
-      return { ok: true, data: { defense_action: "ALLOW", classification: "TOO_SHORT" } };
+    // Allow empty or very short messages (like "hi", "ok", etc.)
+    if (!text || text.length === 0) {
+      console.log("[analyzePrompt] Empty message - allowing");
+      return { ok: true, data: { defense_action: "ALLOW", classification: "EMPTY" } };
     }
 
-    console.log("[analyzePrompt] Analyzing:", text.substring(0, 50) + "...");
-    console.log("[analyzePrompt] Full text length:", text.length, "characters");
+    console.log("===========================================");
+    console.log("[ANALYZING COMPLETE MESSAGE]");
+    console.log("===========================================");
+    console.log("Message:", text);
+    console.log("Length:", text.length, "characters");
+    console.log("===========================================");
 
     return new Promise((resolve) => {
       const timer = setTimeout(() => {
-        console.warn("[analyzePrompt] Timeout");
-        showToast("Timeout", "Analysis took too long");
-        resolve({ ok: false, action: "ALLOW" });
+        console.warn("[analyzePrompt] Timeout - allowing message");
+        showToast("⏱️ Timeout", "Analysis took too long - allowing message");
+        resolve({ ok: true, data: { defense_action: "ALLOW", classification: "TIMEOUT" } });
       }, CONFIG.ANALYSIS_TIMEOUT);
 
       sendMessageSafe(
@@ -217,11 +314,11 @@
         (response) => {
           clearTimeout(timer);
           if (response?.ok) {
-            console.log("[analyzePrompt] Success:", response);
+            console.log("[Backend Response]:", response);
             resolve(response);
           } else {
-            console.error("[analyzePrompt] Failed:", response?.error);
-            resolve({ ok: false, action: "ALLOW" });
+            console.error("[Backend Error]:", response?.error);
+            resolve({ ok: true, data: { defense_action: "ALLOW", classification: "BACKEND_ERROR" } });
           }
         }
       );
@@ -229,53 +326,61 @@
   }
 
   // Handle analysis result
-  function handleResult(result, inputElem, originalEvent) {
+  async function handleResult(result, inputElem, originalEvent) {
     try {
-      if (!result.ok) {
-        console.warn("[handleResult] Analysis failed - allowing");
-        showToast("Failed", "Allowed by default");
-        resendPrompt(inputElem, originalEvent);
-        return;
-      }
-
       const action = result.data?.defense_action || "ALLOW";
       const classification = result.data?.classification || "UNKNOWN";
 
-      console.log("[handleResult] Action:", action, "Classification:", classification);
+      console.log("===========================================");
+      console.log("[DEFENSE DECISION]");
+      console.log("Action:", action);
+      console.log("Classification:", classification);
+      console.log("===========================================");
 
       switch (action) {
         case "ALLOW":
-          showToast("Safe", classification);
-          resendPrompt(inputElem, originalEvent);
+          if (classification !== "BACKEND_ERROR" && classification !== "EXTENSION_INVALID") {
+            showToast("✓ SAFE", classification);
+          }
+          console.log("[Action] Message is SAFE - Sending to ChatGPT");
+          allowSendThrough(inputElem, originalEvent);
           break;
 
         case "SANITIZE":
-          showToast("Sanitized", classification);
+          showToast("🧹 SANITIZED", classification);
+          console.log("[Action] Message SANITIZED - Sending cleaned version");
           if (result.data.cleaned_input) {
+            console.log("[Cleaned]:", result.data.cleaned_input);
             setText(inputElem, result.data.cleaned_input);
           }
-          resendPrompt(inputElem, originalEvent);
+          allowSendThrough(inputElem, originalEvent);
           break;
 
         case "BLOCK":
-          showToast("Blocked", "Injection detected!");
-          console.warn("[handleResult] BLOCKED malicious prompt");
+          showToast("🚫 BLOCKED", "Injection attempt detected!");
+          console.log("[Action] Message BLOCKED - NOT sending to ChatGPT");
+          console.warn("SECURITY: Malicious prompt blocked!");
+          isProcessing = false;
           break;
 
         default:
-          showToast("Unknown", "Allowing");
-          resendPrompt(inputElem, originalEvent);
+          showToast("⚠️ Unknown Action", "Allowing by default");
+          allowSendThrough(inputElem, originalEvent);
       }
     } catch (e) {
       console.error("[handleResult] Error:", e);
-      resendPrompt(inputElem, originalEvent);
+      allowSendThrough(inputElem, originalEvent);
     }
   }
 
-  // Re-send the prompt
-  function resendPrompt(inputElem, originalEvent) {
+  // Allow send through without retriggering
+  function allowSendThrough(inputElem, originalEvent) {
+    allowNextSend = true;
+    
     setTimeout(() => {
       try {
+        console.log("[allowSendThrough] Triggering actual send...");
+        
         if (originalEvent.type === "keydown") {
           const event = new KeyboardEvent("keydown", {
             key: "Enter",
@@ -287,10 +392,19 @@
           });
           inputElem.dispatchEvent(event);
         } else if (originalEvent.type === "click") {
-          originalEvent.target.click();
+          const button = findSendButton();
+          if (button) button.click();
         }
+        
+        setTimeout(() => {
+          isProcessing = false;
+          allowNextSend = false;
+        }, 500);
+        
       } catch (e) {
-        console.error("[resendPrompt] Error:", e);
+        console.error("[allowSendThrough] Error:", e);
+        isProcessing = false;
+        allowNextSend = false;
       }
     }, 100);
   }
@@ -305,7 +419,16 @@
 
       const toast = document.createElement("div");
       toast.id = "llm-defense-toast";
-      toast.innerHTML = '<div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); color: white; padding: 12px 16px; border-radius: 8px; z-index: 999999; font-family: system-ui, -apple-system, sans-serif; font-size: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.4); max-width: 320px; border: 2px solid rgba(255,255,255,0.1);"><strong>' + title + '</strong><br><span style="opacity: 0.9;">' + message + '</span></div>';
+      toast.innerHTML = `
+        <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(0,0,0,0.9); 
+                    color: white; padding: 12px 16px; border-radius: 8px; z-index: 999999; 
+                    font-family: system-ui, -apple-system, sans-serif; font-size: 14px; 
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.4); max-width: 320px; 
+                    border: 2px solid rgba(255,255,255,0.1);">
+          <strong>${title}</strong><br>
+          <span style="opacity: 0.9;">${message}</span>
+        </div>
+      `;
       document.body.appendChild(toast);
 
       setTimeout(() => {
@@ -322,7 +445,7 @@
 
   // Start monitoring
   function startMonitoring() {
-    console.log("[Monitor] Starting...");
+    console.log("[Monitor] Starting message interception...");
     
     let trackedInput = null;
     let trackedButton = null;
@@ -332,64 +455,72 @@
         if (!isExtensionValid()) {
           observer.disconnect();
           console.error("[Monitor] Extension invalid - stopping");
+          showReloadWarning();
           return;
         }
 
         const inputElem = findInput();
         const buttonElem = findSendButton();
 
-        // Attach to input
         if (inputElem && inputElem !== trackedInput) {
           trackedInput = inputElem;
-          console.log("[Monitor] Attached to input");
+          console.log("[Monitor] ✓ Attached to input - monitoring Enter key");
           showStatusIndicator();
 
-          // Log input changes with visual feedback
-          inputElem.addEventListener("input", () => {
-            const text = getText(inputElem);
-            if (text.length >= CONFIG.MIN_PROMPT_LENGTH) {
-              console.log("[INPUT CAPTURED] Length:", text.length, "characters");
-              console.log("[INPUT CAPTURED] Preview:", text.substring(0, 100) + (text.length > 100 ? "..." : ""));
-            }
-          });
-
-          // Intercept Enter key
           inputElem.addEventListener("keydown", async (e) => {
+            if (allowNextSend) {
+              console.log("[ENTER KEY] Allowing send through (already analyzed)");
+              return;
+            }
+            
             if (e.key === "Enter" && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
               const text = getText(inputElem);
-              if (text.length >= CONFIG.MIN_PROMPT_LENGTH) {
-                console.log("[ENTER PRESSED] Intercepted! Analyzing prompt...");
-                console.log("[ENTER PRESSED] Text:", text);
-                e.preventDefault();
-                e.stopPropagation();
-                e.stopImmediatePropagation();
-
-                const result = await analyzePrompt(text);
-                handleResult(result, inputElem, e);
+              
+              // Process ALL messages, even very short ones
+              if (isProcessing) {
+                console.warn("[ENTER KEY] Already processing, ignoring...");
+                return;
               }
-            }
-          }, true);
-        }
-
-        // Attach to button
-        if (buttonElem && buttonElem !== trackedButton) {
-          trackedButton = buttonElem;
-          console.log("[Monitor] Attached to send button");
-
-          buttonElem.addEventListener("click", async (e) => {
-            const inputElem = findInput();
-            const text = getText(inputElem);
-            
-            if (text.length >= CONFIG.MIN_PROMPT_LENGTH) {
-              console.log("[BUTTON CLICKED] Intercepted! Analyzing prompt...");
-              console.log("[BUTTON CLICKED] Text:", text);
+              
+              console.log("\n🔍 [ENTER KEY] User wants to send message!");
               e.preventDefault();
               e.stopPropagation();
               e.stopImmediatePropagation();
 
+              isProcessing = true;
               const result = await analyzePrompt(text);
-              handleResult(result, inputElem, e);
+              await handleResult(result, inputElem, e);
             }
+          }, true);
+        }
+
+        if (buttonElem && buttonElem !== trackedButton) {
+          trackedButton = buttonElem;
+          console.log("[Monitor] ✓ Attached to send button - monitoring clicks");
+
+          buttonElem.addEventListener("click", async (e) => {
+            if (allowNextSend) {
+              console.log("[SEND BUTTON] Allowing send through (already analyzed)");
+              return;
+            }
+            
+            const inputElem = findInput();
+            const text = getText(inputElem);
+            
+            // Process ALL messages, even very short ones
+            if (isProcessing) {
+              console.warn("[SEND BUTTON] Already processing, ignoring...");
+              return;
+            }
+            
+            console.log("\n🔍 [SEND BUTTON] User clicked send!");
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            isProcessing = true;
+            const result = await analyzePrompt(text);
+            await handleResult(result, inputElem, e);
           }, true);
         }
 
@@ -400,7 +531,8 @@
 
     try {
       observer.observe(document.body, { childList: true, subtree: true });
-      console.log("[Monitor] Observing page");
+      console.log("[Monitor] ✓ Now watching for send attempts");
+      console.log("[Monitor] Will analyze messages when you press Enter or click Send");
     } catch (e) {
       console.error("[Monitor] Failed to observe:", e);
     }
@@ -413,6 +545,6 @@
     initialize();
   }
 
-  console.log("LLM Prompt Defense v2.0 - Loaded");
+  console.log("🛡️ LLM Prompt Defense v3.1 - Loaded");
 
 })();

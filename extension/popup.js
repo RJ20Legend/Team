@@ -26,32 +26,52 @@ async function analyzePrompt() {
   metricsDiv.classList.add('hidden');
   
   try {
-    // Create form data
-    const formData = new URLSearchParams();
-    formData.append('user_input', userPrompt);
-    
+    // Use consistent JSON format (same as background.js)
     const response = await fetch('http://127.0.0.1:8000/analyze', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      body: formData
+      body: JSON.stringify({ user_input: userPrompt })
     });
     
     if (!response.ok) {
-      throw new Error('Backend connection failed');
+      throw new Error(`Backend error: ${response.status} ${response.statusText}`);
     }
     
     const data = await response.json();
     
+    // Validate response structure
+    if (!data.classification || !data.defense_action) {
+      throw new Error('Invalid response format from backend');
+    }
+    
     displayResult(data);
     
   } catch (error) {
-    resultDiv.innerHTML = `
-      <strong>⚠️ Error:</strong><br>
-      Backend not running. Make sure your Python server is running:<br>
-      <code>uvicorn main:app --reload</code>
-    `;
+    console.error('Analysis error:', error);
+    
+    let errorMessage = '';
+    if (error.message.includes('Failed to fetch')) {
+      errorMessage = `
+        <strong>⚠️ Backend Connection Failed</strong><br><br>
+        Make sure your Python server is running:<br>
+        <code>uvicorn main:app --reload --host 127.0.0.1 --port 8000</code>
+        <br><br>
+        <strong>Common issues:</strong><br>
+        • Backend server not started<br>
+        • Wrong port (should be 8000)<br>
+        • CORS not configured<br>
+        • Firewall blocking connection
+      `;
+    } else {
+      errorMessage = `
+        <strong>⚠️ Error:</strong><br>
+        ${error.message}
+      `;
+    }
+    
+    resultDiv.innerHTML = errorMessage;
     resultDiv.className = 'result malicious';
     resultDiv.classList.remove('hidden');
   } finally {
@@ -66,22 +86,47 @@ function displayResult(data) {
   
   const riskClass = data.classification.toLowerCase();
   
+  // Status icons
+  const statusIcons = {
+    'safe': '✅',
+    'suspicious': '⚠️',
+    'malicious': '🚫'
+  };
+  
+  const actionIcons = {
+    'ALLOW': '✅',
+    'SANITIZE': '⚠️',
+    'BLOCK': '🚫'
+  };
+  
+  const icon = statusIcons[riskClass] || '🛡️';
+  const actionIcon = actionIcons[data.defense_action] || '•';
+  
   resultDiv.innerHTML = `
-    <div style="font-size: 16px; margin-bottom: 10px;">
-      <strong>Classification:</strong> 
-      <span style="font-size: 18px;">${data.classification}</span>
+    <div style="font-size: 16px; margin-bottom: 12px;">
+      <strong>${icon} Classification:</strong> 
+      <span style="font-size: 18px; font-weight: 700;">${data.classification}</span>
     </div>
-    <div style="margin: 8px 0;">
-      <strong>Defense Action:</strong> ${data.defense_action}
+    <div style="margin: 10px 0; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 6px;">
+      <strong>${actionIcon} Defense Action:</strong> 
+      <span style="font-weight: 600;">${data.defense_action}</span>
     </div>
-    <div style="margin: 8px 0;">
-      <strong>Cleaned Input:</strong><br>
-      <code>${data.cleaned_input}</code>
-    </div>
-    <div style="margin: 8px 0;">
-      <strong>LLM Response:</strong><br>
-      ${data.llm_response}
-    </div>
+    ${data.cleaned_input ? `
+      <div style="margin: 10px 0;">
+        <strong>🔧 Cleaned Input:</strong><br>
+        <div style="margin-top: 6px; padding: 10px; background: rgba(0,0,0,0.03); border-radius: 6px; max-height: 120px; overflow-y: auto;">
+          <code style="white-space: pre-wrap; word-break: break-word;">${escapeHtml(data.cleaned_input)}</code>
+        </div>
+      </div>
+    ` : ''}
+    ${data.llm_response ? `
+      <div style="margin: 10px 0;">
+        <strong>💬 LLM Analysis:</strong><br>
+        <div style="margin-top: 6px; padding: 10px; background: rgba(0,0,0,0.03); border-radius: 6px; max-height: 120px; overflow-y: auto; font-size: 13px; line-height: 1.5;">
+          ${escapeHtml(data.llm_response)}
+        </div>
+      </div>
+    ` : ''}
   `;
   
   resultDiv.className = `result ${riskClass}`;
@@ -89,11 +134,31 @@ function displayResult(data) {
   
   metricsDiv.innerHTML = `
     <div class="metric-item">
-      <strong>Risk Score:</strong> ${data.risk_score}/5
+      <strong>📊 Risk Score:</strong> ${data.risk_score || 'N/A'}/5
     </div>
-    <div class="metric-item">
-      <strong>Processing Time:</strong> ${(data.latency_seconds).toFixed(3)}s
-    </div>
+    ${data.latency_seconds ? `
+      <div class="metric-item">
+        <strong>⏱️ Processing Time:</strong> ${(data.latency_seconds).toFixed(3)}s
+      </div>
+    ` : ''}
+    ${data.model_used ? `
+      <div class="metric-item">
+        <strong>🤖 Model:</strong> ${data.model_used}
+      </div>
+    ` : ''}
   `;
   metricsDiv.classList.remove('hidden');
 }
+
+// Utility function to escape HTML and prevent XSS
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Add keyboard shortcut info
+document.addEventListener('DOMContentLoaded', () => {
+  const promptInput = document.getElementById('promptInput');
+  promptInput.placeholder = 'Enter your prompt here to check for injection attacks...\n\nTip: Press Ctrl+Enter to analyze';
+});

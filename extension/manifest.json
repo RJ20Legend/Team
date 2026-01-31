@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "LLM Prompt Security Defense",
+  "version": "1.0",
+  "description": "Real-time defense against prompt injection attacks",
+  "permissions": ["activeTab"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Check Prompt Security"
+  },
+  "host_permissions": [
+    "http://127.0.0.1:8000/*"
+  ]
+}

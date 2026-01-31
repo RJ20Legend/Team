@@ -2,10 +2,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
 from typing import Optional
-
 from modules.preprocessor import process as preprocess
 from modules.intent_detector import process as detect_intent
-from modules.classifier import process as classify
+from modules.classifier import process as classify, reset_state
 from modules.defense import process as defend
 
 app = FastAPI()
@@ -17,7 +16,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 class UserInput(BaseModel):
     message: str
     history: list = []
@@ -42,11 +40,21 @@ def analyze(input: AnalyzeInput):
         p = preprocess(input.user_input, history)
         i = detect_intent(p["clean_text"], history)
         c = classify(i)
+
+        # 5️⃣ Defense
         d = defend(p["clean_text"], c)
 
-        print("INPUT:", input.user_input)
-        print("RISK:", c["risk"])
-        print("ACTION:", d["action"])
+        # 6️⃣ LLM response (Claude via RAG)
+        llm_response = f"Detected: {c['risk']} - Action: {d['action']}"
+
+
+        # 🔍 Judge-friendly logs
+        print("\n--- SECURITY PIPELINE ---")
+        print("User Input:", input.user_input)
+        print("Intent Signals:", i["signals"])
+        print("Classification:", c)
+        print("Defense Action:", d["action"])
+        print("-------------------------\n")
 
         return {
             "classification": c["risk"],

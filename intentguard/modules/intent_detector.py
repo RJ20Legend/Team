@@ -1,17 +1,15 @@
 """
 Intent Detection Module
 
-This module extracts structured security signals from user prompts:
-- Primary Intent (what the user asks)
-- Meta Intent (prompt override attempts)
+Extracts structured intent-level security signals:
+- Primary Intent
+- Meta Intent (override attempts)
 - Intent Drift (multi-turn goal change)
-- Obfuscation Score (hidden attack signals)
 
-These signals help downstream modules detect prompt injection,
-role manipulation, and multi-step attacks.
+NOTE:
+- This module does NOT make decisions.
+- Obfuscation and injection are handled downstream.
 """
-
-from modules.obfuscation_detector import process as detect_obfuscation
 
 PRIMARY_KEYWORDS = {
     "code_review": ["review", "audit", "vulnerability", "security"],
@@ -68,21 +66,17 @@ def compute_drift(history, current_intent: str) -> float:
     return 0.7
 
 
-def detect_intent(text, history, debug=False):
+def process(text: str, history: list, debug: bool = False):
     primary = detect_primary_intent(text)
     meta = detect_meta_intent(text)
     drift = compute_drift(history, primary)
-
-    obf = detect_obfuscation(text, history)
 
     result = {
         "output": text,
         "signals": {
             "primary_intent": primary,
             "meta_intent": meta,
-            "intent_drift": drift,
-            "obfuscation_score": obf["obfuscation_score"],
-            "obfuscation_reason": obf["reason"]
+            "intent_drift": drift
         }
     }
 
@@ -90,8 +84,3 @@ def detect_intent(text, history, debug=False):
         print("Intent Signals:", result["signals"])
 
     return result
-
-
-# 🔒 Interface freeze
-def process(text, history):
-    return detect_intent(text, history)

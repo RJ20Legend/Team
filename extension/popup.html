@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LLM Security</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <h2>🛡️ LLM Prompt Defense</h2>
+    
+    <textarea 
+      id="promptInput" 
+      placeholder="Enter your prompt here to check for injection attacks..."></textarea>
+    
+    <button id="analyzeBtn">Analyze Prompt</button>
+    
+    <div id="result" class="result hidden"></div>
+    
+    <div id="metrics" class="metrics hidden"></div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

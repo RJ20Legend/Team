@@ -1,6 +1,7 @@
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import List, Dict, Optional
 
 from modules.preprocessor import process as preprocess
 from modules.intent_detector import process as detect_intent
@@ -19,16 +20,16 @@ app.add_middleware(
 
 class AnalyzeInput(BaseModel):
     user_input: str
-    history: list = []
+    history: Optional[List[Dict]] = None
 
-@app.post("/chat")
-def chat():
+@app.get("/health")
+def health():
     return {"status": "IntentGuard backend running"}
 
 @app.post("/analyze")
 def analyze(input: AnalyzeInput):
     try:
-        # 0️⃣ Reset classifier state for new conversations
+        # Reset classifier state ONLY for new conversations
         if not input.history:
             reset_state()
 
@@ -40,7 +41,7 @@ def analyze(input: AnalyzeInput):
         # 2️⃣ Intent detection
         i = detect_intent(p["clean_text"], history)
 
-        # 3️⃣ Update history (only what is needed)
+        # 3️⃣ Update history (minimal, explainable)
         history.append({
             "primary_intent": i["signals"]["primary_intent"]
         })
@@ -57,7 +58,7 @@ def analyze(input: AnalyzeInput):
         else:
             llm_response = f"(Simulated LLM Response to): {d['safe_prompt']}"
 
-        # 🔍 Console logs (judge-friendly)
+        # 🔍 Judge-friendly logs
         print("\n--- SECURITY PIPELINE ---")
         print("User Input:", input.user_input)
         print("Intent Signals:", i["signals"])
@@ -68,6 +69,7 @@ def analyze(input: AnalyzeInput):
         return {
             "classification": c["risk"],
             "defense_action": d["action"],
+            "defense_note": d.get("note"),
             "llm_response": llm_response,
             "updated_history": history
         }

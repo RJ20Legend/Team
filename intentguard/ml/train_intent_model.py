@@ -38,7 +38,7 @@ def clean_text(text: str) -> str:
 # ----------------------------
 benign = load_jsonl("../data/benign_9000.jsonl")
 suspicious = load_jsonl("../data/merged_suspicious_dataset.jsonl")
-malicious = load_jsonl("../data/merged_final.jsonl")
+malicious = load_jsonl("../data/merged_8500.jsonl")
 
 df = pd.DataFrame(benign + suspicious + malicious)
 

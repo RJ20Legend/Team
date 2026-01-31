@@ -1,5 +1,5 @@
 # ml/intent_predictor.py
-
+import os
 import re
 import joblib
 import numpy as np
@@ -26,8 +26,13 @@ def clean_text(text: str) -> str:
 # ----------------------------
 # Load model artifacts ONCE
 # ----------------------------
-MODEL_PATH = "intentguard_model.pkl"
-VECTORIZER_PATH = "intentguard_vectorizer.pkl"
+
+
+BASE_DIR = os.path.dirname(__file__)
+
+MODEL_PATH = os.path.join(BASE_DIR, "intentguard_model.pkl")
+VECTORIZER_PATH = os.path.join(BASE_DIR, "intentguard_vectorizer.pkl")
+
 
 model = joblib.load(MODEL_PATH)
 vectorizer = joblib.load(VECTORIZER_PATH)

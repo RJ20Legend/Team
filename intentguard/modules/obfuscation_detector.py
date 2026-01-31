@@ -6,6 +6,7 @@ import unicodedata
 BASE64_REGEX = re.compile(r"(?:[A-Za-z0-9+/]{20,}={0,2})")
 SPACED_WORD_REGEX = re.compile(r"(?:\b\w\s){4,}\w")
 
+
 def process(text, history=None):
     reasons = []
     score = 0.0
@@ -21,7 +22,7 @@ def process(text, history=None):
         reasons.append("Base64-like encoded content")
         score += 0.4
 
-    # Weird spacing (i g n o r e)
+    # Spaced-out text (i g n o r e)
     if SPACED_WORD_REGEX.search(text.lower()):
         reasons.append("Suspicious spaced-out text")
         score += 0.3

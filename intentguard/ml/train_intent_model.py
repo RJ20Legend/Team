@@ -2,6 +2,7 @@
 
 import json
 import re
+import os
 import joblib
 import pandas as pd
 
@@ -12,9 +13,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
 
-# ----------------------------
+# ======================================================
+# Path setup (ROBUST – works from anywhere)
+# ======================================================
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "..", "data")
+
+
+# ======================================================
 # Utilities
-# ----------------------------
+# ======================================================
 def load_jsonl(path):
     data = []
     with open(path, "r", encoding="utf-8") as f:
@@ -26,25 +34,59 @@ def load_jsonl(path):
 def clean_text(text: str) -> str:
     """
     Light cleaning.
-    DO NOT remove symbols aggressively — scripts need them.
+    DO NOT remove symbols – scripts & system commands need them.
     """
-    text = text.lower()
+    text = str(text).lower()
     text = re.sub(r"\s+", " ", text)
     return text.strip()
 
 
-# ----------------------------
-# Load datasets
-# ----------------------------
-benign = load_jsonl("../data/benign_9000.jsonl")
-suspicious = load_jsonl("../data/merged_suspicious_dataset.jsonl")
-malicious = load_jsonl("../data/merged_8500.jsonl")
+# ======================================================
+# Load BASE datasets (JSONL)
+# ======================================================
+benign = load_jsonl(os.path.join(DATA_DIR, "benign_9000.jsonl"))
+suspicious = load_jsonl(os.path.join(DATA_DIR, "merged_suspicious_dataset.jsonl"))
+malicious = load_jsonl(os.path.join(DATA_DIR, "merged_8500.jsonl"))
 
-df = pd.DataFrame(benign + suspicious + malicious)
+base_df = pd.DataFrame(benign + suspicious + malicious)
 
-# ✅ Column safety (VERY IMPORTANT)
-TEXT_COL = "text" if "text" in df.columns else "prompt"
+TEXT_COL = "text" if "text" in base_df.columns else "prompt"
+base_df = base_df[[TEXT_COL, "label"]].rename(columns={TEXT_COL: "text"})
 
+
+# ======================================================
+# Load SYSTEM ACCESS / PROMPT INJECTION dataset (PARQUET)
+# ======================================================
+system_df = pd.read_parquet(
+    os.path.join(DATA_DIR, "0000_train.parquet")
+)
+
+# Map numeric labels → IntentGuard labels
+# 0 = benign, 1 = attack / injection
+system_df["label"] = system_df["label"].map({
+    0: "benign",
+    1: "malicious"
+})
+
+# Drop unexpected labels
+system_df = system_df.dropna(subset=["label"])
+
+# Keep required columns only
+system_df = system_df[["text", "label"]]
+
+
+# ======================================================
+# Merge ALL datasets
+# ======================================================
+df = pd.concat(
+    [base_df, system_df],
+    ignore_index=True
+)
+
+
+# ======================================================
+# Label encoding
+# ======================================================
 label_map = {
     "benign": 0,
     "suspicious": 1,
@@ -52,18 +94,25 @@ label_map = {
 }
 
 df["label_id"] = df["label"].map(label_map)
-df["clean_text"] = df[TEXT_COL].astype(str).apply(clean_text)
+df = df.dropna(subset=["label_id"])
+
+
+# ======================================================
+# Text cleaning
+# ======================================================
+df["clean_text"] = df["text"].apply(clean_text)
 
 X = df["clean_text"]
 y = df["label_id"]
 
-print("\nDataset distribution:")
+print("\n================ DATASET DISTRIBUTION ================")
 print(df["label"].value_counts())
+print("======================================================\n")
 
 
-# ----------------------------
+# ======================================================
 # Vectorization (WORD + CHAR)
-# ----------------------------
+# ======================================================
 vectorizer = FeatureUnion([
     (
         "word",
@@ -78,8 +127,8 @@ vectorizer = FeatureUnion([
         "char",
         TfidfVectorizer(
             analyzer="char",
-            ngram_range=(3, 5),
-            max_features=8000
+            ngram_range=(4, 5),
+            max_features=5000
         )
     )
 ])
@@ -87,9 +136,9 @@ vectorizer = FeatureUnion([
 X_vec = vectorizer.fit_transform(X)
 
 
-# ----------------------------
+# ======================================================
 # Train / test split
-# ----------------------------
+# ======================================================
 X_train, X_test, y_train, y_test = train_test_split(
     X_vec,
     y,
@@ -99,11 +148,11 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 
-# ----------------------------
+# ======================================================
 # Model
-# ----------------------------
+# ======================================================
 model = LogisticRegression(
-    max_iter=1500,
+    max_iter=1200,
     class_weight="balanced",
     n_jobs=-1
 )
@@ -111,12 +160,12 @@ model = LogisticRegression(
 model.fit(X_train, y_train)
 
 
-# ----------------------------
+# ======================================================
 # Evaluation
-# ----------------------------
+# ======================================================
 y_pred = model.predict(X_test)
 
-print("\n=== Classification Report ===")
+print("\n================ CLASSIFICATION REPORT ================")
 print(
     classification_report(
         y_test,
@@ -124,11 +173,12 @@ print(
         target_names=["benign", "suspicious", "malicious"]
     )
 )
+print("======================================================\n")
 
 
-# ----------------------------
+# ======================================================
 # Save artifacts
-# ----------------------------
+# ======================================================
 joblib.dump(model, "intentguard_model.pkl")
 joblib.dump(vectorizer, "intentguard_vectorizer.pkl")
 

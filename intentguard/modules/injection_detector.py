@@ -7,12 +7,15 @@ Detects explicit and contextual prompt injection attempts:
 - Boundary/role marker spoofing
 - Instruction hidden inside quoted or embedded data
 
-Returns SAFE abstract signals by default.
-Detailed matches are available only in debug mode.
+Provides:
+- detect()  -> classifier-facing API (safe)
+- process() -> internal detailed signals (debug-capable)
 """
 
 from typing import Dict, List
 import re
+
+# ================== PATTERNS ==================
 
 INJECTION_PATTERNS = [
     "ignore previous instructions",
@@ -35,17 +38,22 @@ ROLEPLAY_PATTERNS = [
 ]
 
 BOUNDARY_SPOOF_PATTERNS = [
-    r"\b(system|assistant|developer|user)\s*:",
-    r"<\s*(system|assistant|developer|user)\s*>",
-    r"#+\s*(system|assistant) prompt",
+    r"^(system|assistant|developer|user)\s*:",        # ONLY at start
+    r"^<\s*(system|assistant|developer|user)\s*>",   # ONLY at start
+    r"^#+\s*(system|assistant)\s+prompt",
     r"\bend of (system|assistant) message\b"
 ]
+
 
 IMPERATIVE_VERBS = [
     "ignore", "follow", "execute", "reveal",
     "print", "show", "list", "describe", "disclose"
 ]
 
+INJECTION_BLOCK_THRESHOLD = 0.7
+
+
+# ================== HELPERS ==================
 
 def detect_roleplay(text: str) -> List[str]:
     return [p for p in ROLEPLAY_PATTERNS if re.search(p, text, re.IGNORECASE)]
@@ -61,6 +69,8 @@ def detect_instruction_in_data(text: str) -> List[str]:
     return verbs if has_embedded and verbs else []
 
 
+# ================== CORE PROCESS ==================
+
 def process(text: str, history: list | None = None, debug: bool = False) -> Dict:
     t = (text or "").lower()
 
@@ -75,15 +85,15 @@ def process(text: str, history: list | None = None, debug: bool = False) -> Dict
     score += 0.6 if boundary_hits else 0.0
     score += 0.6 if data_hits else 0.0
 
-    # ✅ SAFE OUTPUT
+    score = min(score, 1.0)
+
     result = {
-        "injection_score": min(score, 1.0),
+        "injection_score": score,
         "roleplay_detected": 1 if roleplay_hits else 0,
         "boundary_spoof_detected": 1 if boundary_hits else 0,
         "instruction_in_data": 1 if data_hits else 0,
     }
 
-    # 🔒 INTERNAL DEBUG ONLY
     if debug:
         result.update({
             "_matched_patterns": matched,
@@ -93,3 +103,33 @@ def process(text: str, history: list | None = None, debug: bool = False) -> Dict
         })
 
     return result
+
+
+# ================== CLASSIFIER-FACING API ==================
+
+def detect(text: str) -> Dict:
+    """
+    Safe interface for classifier.py
+
+    Returns:
+    {
+      "detected": bool,
+      "score": float,
+      "patterns": List[str]
+    }
+    """
+    details = process(text, debug=True)
+
+    detected = details["injection_score"] >= INJECTION_BLOCK_THRESHOLD
+
+    patterns = []
+    patterns += details.get("_matched_patterns", [])
+    patterns += details.get("_roleplay_patterns", [])
+    patterns += details.get("_boundary_spoof_patterns", [])
+    patterns += details.get("_instruction_in_data_verbs", [])
+
+    return {
+        "detected": detected,
+        "score": details["injection_score"],
+        "patterns": patterns
+    }

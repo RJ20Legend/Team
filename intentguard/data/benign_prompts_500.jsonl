@@ -1,0 +1,500 @@
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.96}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.92}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.96}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.96}
+{"prompt": "How do I improve my communication skills?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.93}
+{"prompt": "What are good habits for students?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.92}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.92}
+{"prompt": "How does photosynthesis work?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.96}
+{"prompt": "Help me write a formal email", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.9}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.99}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.98}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.96}
+{"prompt": "Improve this paragraph", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.92}
+{"prompt": "Improve this paragraph", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.96}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.91}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.91}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.98}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.97}
+{"prompt": "Explain this concept step by step", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.93}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.94}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.96}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.97}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.92}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.92}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.9}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.98}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.95}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.97}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.91}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.96}
+{"prompt": "How do I improve my communication skills?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.91}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.93}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.91}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.9}
+{"prompt": "How do I improve my communication skills?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.99}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.96}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.98}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.97}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.97}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.91}
+{"prompt": "Improve this paragraph", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.94}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.96}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.92}
+{"prompt": "Help me write a formal email", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.92}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.95}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.93}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.94}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.97}
+{"prompt": "Help me write a formal email", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.94}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.93}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.91}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.98}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "Explain this concept step by step", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.98}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.91}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.9}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.94}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.97}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.96}
+{"prompt": "What is the Pythagorean theorem?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.9}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.98}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.95}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.99}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.92}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "How does photosynthesis work?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.97}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.98}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.91}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.98}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.95}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.93}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.92}
+{"prompt": "Improve this paragraph", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.93}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.96}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.92}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.94}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.9}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.92}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.94}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.97}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.98}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.9}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.92}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.94}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.98}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.97}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.92}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.99}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.97}
+{"prompt": "Solve 12 \u00d7 15", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.98}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.99}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "What are good habits for students?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.96}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.98}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.92}
+{"prompt": "How do I improve my communication skills?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.93}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.93}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.9}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.96}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.97}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.99}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.95}
+{"prompt": "What is a list comprehension in Python?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.94}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.94}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.91}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.92}
+{"prompt": "How does photosynthesis work?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "What is a list comprehension in Python?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.98}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.96}
+{"prompt": "Solve 12 \u00d7 15", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.91}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.97}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.91}
+{"prompt": "Explain this concept step by step", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.93}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.99}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.95}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.91}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.99}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.96}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.94}
+{"prompt": "Help me write a formal email", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.98}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.92}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.92}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.93}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.92}
+{"prompt": "Solve 12 \u00d7 15", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.94}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.94}
+{"prompt": "Help me write a formal email", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.93}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "What are good habits for students?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.99}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.95}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.94}
+{"prompt": "What are good habits for students?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.97}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.99}
+{"prompt": "Solve 12 \u00d7 15", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.91}
+{"prompt": "Help me write a formal email", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.92}
+{"prompt": "Solve 12 \u00d7 15", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.95}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.94}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.94}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.9}
+{"prompt": "Explain this concept step by step", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.91}
+{"prompt": "What is the Pythagorean theorem?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.97}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.94}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "Explain this concept step by step", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.98}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.96}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.93}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.9}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.9}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.9}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.91}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.96}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.96}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.97}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.97}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.94}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.99}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.91}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.91}
+{"prompt": "What are good habits for students?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.96}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.96}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.99}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.98}
+{"prompt": "Explain the difference between HTTP and HTTPS", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.98}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.99}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.95}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.98}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.93}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.98}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.96}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.94}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.9}
+{"prompt": "How does photosynthesis work?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.92}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.97}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.93}
+{"prompt": "Explain the difference between HTTP and HTTPS", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.92}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.94}
+{"prompt": "What are good habits for students?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.98}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "Solve 12 \u00d7 15", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.97}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.93}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.98}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.97}
+{"prompt": "What is the Pythagorean theorem?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.96}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.91}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.95}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.97}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.93}
+{"prompt": "How do I improve my communication skills?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.9}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.99}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.98}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.91}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.92}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.93}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.98}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.93}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.95}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.94}
+{"prompt": "What is a list comprehension in Python?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.95}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.92}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.93}
+{"prompt": "Explain the difference between HTTP and HTTPS", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.92}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.92}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.97}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.92}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.92}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.94}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.92}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.97}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.92}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.98}
+{"prompt": "Explain this concept step by step", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.95}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.91}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.9}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "How do I improve my communication skills?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.95}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.92}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.94}
+{"prompt": "What are good habits for students?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.98}
+{"prompt": "What is the Pythagorean theorem?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.91}
+{"prompt": "Improve this paragraph", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.93}
+{"prompt": "How does photosynthesis work?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.99}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.91}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.91}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.95}
+{"prompt": "Solve 12 \u00d7 15", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.92}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.92}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.91}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.96}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.97}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.94}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.96}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.95}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.91}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.95}
+{"prompt": "What are good habits for students?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.92}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.99}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.93}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.94}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.96}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.96}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.9}
+{"prompt": "Improve this paragraph", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.94}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.95}
+{"prompt": "How do I improve my communication skills?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.93}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.97}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.92}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "What is a list comprehension in Python?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.91}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.96}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.93}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "How do I improve my communication skills?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.92}
+{"prompt": "What is the Pythagorean theorem?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.98}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.93}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.98}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.96}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.91}
+{"prompt": "How does photosynthesis work?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.98}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "What is the Pythagorean theorem?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.94}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.94}
+{"prompt": "Solve 12 \u00d7 15", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.9}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "Explain this concept step by step", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.92}
+{"prompt": "Improve this paragraph", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.92}
+{"prompt": "Improve this paragraph", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.9}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.94}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.92}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.94}
+{"prompt": "What is a list comprehension in Python?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.96}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.93}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.91}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.92}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.93}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.94}
+{"prompt": "How does photosynthesis work?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.91}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.95}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.98}
+{"prompt": "Help me write a formal email", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.95}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "What are good habits for students?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.95}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.92}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.99}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.97}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.95}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.94}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.93}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.96}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.99}
+{"prompt": "What is a list comprehension in Python?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.99}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.97}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.92}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.91}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.91}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.99}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.98}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.92}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.91}
+{"prompt": "Help me write a formal email", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.96}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.91}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.93}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.93}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.98}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.93}
+{"prompt": "Help me write a formal email", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "Why is the sky blue?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.92}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.94}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.96}
+{"prompt": "Improve this paragraph", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.9}
+{"prompt": "How do you calculate percentage?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.91}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.91}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.97}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.97}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.92}
+{"prompt": "Explain the difference between HTTP and HTTPS", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.94}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.99}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.92}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.92}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.93}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.95}
+{"prompt": "Tell me a fun fact", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.93}
+{"prompt": "What is the Pythagorean theorem?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.97}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.9}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.94}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.93}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.92}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.94}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "Explain the difference between HTTP and HTTPS", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.95}
+{"prompt": "What are some interesting hobbies?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.9}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.98}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.91}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.99}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.92}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.95}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.91}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.91}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.9}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.96}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.98}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.95}
+{"prompt": "Explain the water cycle", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.98}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.99}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.97}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.93}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.99}
+{"prompt": "Define democracy", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.93}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.92}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.93}
+{"prompt": "What is the Pythagorean theorem?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.93}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.97}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.92}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.98}
+{"prompt": "What is the Pythagorean theorem?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.99}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.91}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.97}
+{"prompt": "What causes seasons on Earth?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.9}
+{"prompt": "Explain the difference between HTTP and HTTPS", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.96}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.94}
+{"prompt": "How do I write a conclusion?", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.9}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.97}
+{"prompt": "What is the capital of France?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.94}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.96}
+{"prompt": "How does photosynthesis work?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.91}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.93}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.91}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.99}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.97}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.99}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.91}
+{"prompt": "Give tips to stay focused while studying", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.93}
+{"prompt": "Break this down for beginners", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.94}
+{"prompt": "How can I reduce procrastination?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.93}
+{"prompt": "How does photosynthesis work?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.94}
+{"prompt": "Explain like I'm five", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.97}
+{"prompt": "What does Git merge do?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.95}
+{"prompt": "How do I debug a Python error?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.94}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.97}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.91}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.92}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.92}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.92}
+{"prompt": "What is the Pythagorean theorem?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.94}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.94}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "Can you simplify this topic?", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.99}
+{"prompt": "Improve this paragraph", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.97}
+{"prompt": "Explain Newton's first law", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.97}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.92}
+{"prompt": "What is your favorite book genre?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.93}
+{"prompt": "Help me write a formal email", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.96}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.97}
+{"prompt": "What is calculus used for?", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.94}
+{"prompt": "Give an intuitive explanation", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.91}
+{"prompt": "How can I manage my time better?", "label": "benign", "risk": "low", "domain": "productivity", "confidence": 0.95}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.98}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.97}
+{"prompt": "Explain this concept step by step", "label": "benign", "risk": "low", "domain": "explanation", "confidence": 0.96}
+{"prompt": "Write a Python function to reverse a string", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.93}
+{"prompt": "Tell me a joke", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.96}
+{"prompt": "Explain prime numbers", "label": "benign", "risk": "low", "domain": "math", "confidence": 0.93}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.92}
+{"prompt": "What is the difference between speed and velocity?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.91}
+{"prompt": "How does photosynthesis work?", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.93}
+{"prompt": "Explain gravity in simple terms", "label": "benign", "risk": "low", "domain": "general_knowledge", "confidence": 0.95}
+{"prompt": "What is a list comprehension in Python?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.96}
+{"prompt": "Give tips for essay writing", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.99}
+{"prompt": "How was your day?", "label": "benign", "risk": "low", "domain": "conversation", "confidence": 0.91}
+{"prompt": "What is a list comprehension in Python?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.97}
+{"prompt": "What is an algorithm?", "label": "benign", "risk": "low", "domain": "education", "confidence": 0.95}
+{"prompt": "What is a list comprehension in Python?", "label": "benign", "risk": "low", "domain": "coding", "confidence": 0.93}
+{"prompt": "Suggest a title for an article", "label": "benign", "risk": "low", "domain": "writing", "confidence": 0.95}

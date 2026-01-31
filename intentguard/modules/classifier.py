@@ -3,22 +3,25 @@
 from __future__ import annotations
 from typing import Dict, Any
 
+from ml.intent_predictor import predict_intent
+from modules.injection_detector import detect as detect_injection
+from modules.obfuscation_detector import detect as detect_obfuscation
+
 # --- Tunable thresholds ---
 SAFE_MAX = 0.30
 SUSPICIOUS_MAX = 0.60
+ML_HIGH_CONF = 0.75          # ML confidence to trust malicious prediction
+OBFUSCATION_BLOCK = 0.60     # Obfuscation score threshold
 
-# meta label(s) coming from your intent detector
-STRONG_META = {"override_attempt"}  # you currently output only this
+STRONG_META = {"override_attempt"}
 
-# Single internal state (hackathon demo). For multi-user, make this per session_id.
 _STATE = {
-    "risk_state": 0.0,          # running aggregated risk (0..1)
-    "override_hits": 0,         # number of strong meta hits seen
-    "suspicious_streak": 0,     # consecutive turns with drift >= SAFE_MAX
+    "risk_state": 0.0,
+    "override_hits": 0,
+    "suspicious_streak": 0,
     "turns": 0
 }
 
-# how much to remember history (0.8 = strong memory, 0.6 = forget faster)
 DECAY = 0.80
 
 
@@ -32,119 +35,121 @@ def _clamp01(x: float) -> float:
 
 def process(intent_packet: Dict[str, Any], debug: bool = False) -> Dict[str, Any]:
     """
-    Expects the exact output of detect_intent(text, history) from your intent_detector.py
-
-    intent_packet = {
-      "output": "...",
-      "signals": {
-        "primary_intent": "...",
-        "meta_intent": "...",
-        "intent_drift": 0.7
-      }
-    }
-
-    Returns ONLY decision:
-    { "risk": "SAFE|SUSPICIOUS|MALICIOUS", "reason": "..." }
+    Hybrid classifier:
+    - Injection detector (hard override)
+    - ML intent classifier
+    - Obfuscation escalation
+    - Stateful drift aggregation
     """
 
     signals = intent_packet.get("signals", {}) or {}
+    text = (intent_packet.get("output", "") or "").lower()
 
     primary = (signals.get("primary_intent", "unknown") or "unknown").strip().lower()
     meta = (signals.get("meta_intent", "none") or "none").strip().lower()
     drift = _clamp01(signals.get("intent_drift", 0.0))
 
-    # --- Detect high-confidence instant-block phrases (LLM security) ---
-    text = (intent_packet.get("output", "") or "").lower()
-    INSTANT_BLOCK_PHRASES = [
-        "system prompt",
-        "developer message",
-        "hidden key",
-        "api key",
-        "secret",
-        "sensitive data",
-        "exfiltrate",
-        "leak",
-    ]
-    instant_block = any(p in text for p in INSTANT_BLOCK_PHRASES)
+    # ==========================================================
+    # 1️⃣ HARD OVERRIDE — Injection detector
+    # ==========================================================
+    injection = detect_injection(text)
+    if injection["detected"]:
+        _STATE["override_hits"] += 1
+        out = {
+            "risk": "MALICIOUS",
+            "reason": "Prompt injection detected",
+            "evidence": injection["patterns"]
+        }
+        return _attach_debug(out, debug, primary, meta, drift, 1.0)
 
-    # --- 1) per-turn risk from drift + meta ---
+    # ==========================================================
+    # 2️⃣ ML intent prediction (advisory but strong)
+    # ==========================================================
+    ml = predict_intent(text)
+    ml_label = ml["label"]
+    ml_conf = ml["confidence"]
+
+    # ==========================================================
+    # 3️⃣ Obfuscation detection
+    # ==========================================================
+    obf = detect_obfuscation(text)
+    obf_score = obf.get("score", 0.0)
+
+    # ==========================================================
+    # 4️⃣ Compute per-turn risk
+    # ==========================================================
     current_risk = drift
 
-    # Count override attempts
     if meta in STRONG_META:
-        # graded boost: override is bad; override + drift is worse
         current_risk = max(current_risk, 0.75 + 0.25 * drift)
         _STATE["override_hits"] += 1
 
-    # If instant-block phrase exists, force malicious-level risk
-    # Also count it as an override hit even if meta is "none" (for consistency)
-    if instant_block:
-        current_risk = 1.0
-        if meta not in STRONG_META:
-            _STATE["override_hits"] += 1
+    if ml_label == "malicious" and ml_conf >= ML_HIGH_CONF:
+        current_risk = max(current_risk, ml_conf)
 
-    # streak tracking (used for escalation)
+    if ml_label == "suspicious":
+        current_risk = max(current_risk, 0.5 * ml_conf)
+
+    # ==========================================================
+    # 5️⃣ Stateful aggregation
+    # ==========================================================
     if drift >= SAFE_MAX:
         _STATE["suspicious_streak"] += 1
     else:
         _STATE["suspicious_streak"] = 0
 
-    # --- 2) compress history into risk_state ---
-    _STATE["risk_state"] = _clamp01(DECAY * _STATE["risk_state"] + (1 - DECAY) * current_risk)
+    _STATE["risk_state"] = _clamp01(
+        DECAY * _STATE["risk_state"] + (1 - DECAY) * current_risk
+    )
     _STATE["turns"] += 1
 
     rs = _STATE["risk_state"]
     streak = _STATE["suspicious_streak"]
     overrides = _STATE["override_hits"]
 
-    # --- 3) classification rules (LLM-safety friendly) ---
+    # ==========================================================
+    # 6️⃣ FINAL DECISION LOGIC
+    # ==========================================================
 
-    # Instant block decision AFTER state update (so debug/counters are correct)
-    if instant_block:
-        out = {"risk": "MALICIOUS", "reason": "High-confidence secret/exfiltration request"}
+    # ML + obfuscation => hard block
+    if ml_label == "malicious" and obf_score >= OBFUSCATION_BLOCK:
+        out = {"risk": "MALICIOUS", "reason": "ML malicious + obfuscation"}
         return _attach_debug(out, debug, primary, meta, drift, current_risk)
 
-    # Repeated override attempts => malicious
+    # Repeated overrides
     if overrides >= 2:
-        out = {"risk": "MALICIOUS", "reason": "Repeated override attempts across turns"}
+        out = {"risk": "MALICIOUS", "reason": "Repeated override attempts"}
         return _attach_debug(out, debug, primary, meta, drift, current_risk)
 
-    # First override attempt => suspicious, unless also strong drift
-    if overrides == 1:
-        if drift >= 0.6:
-            out = {"risk": "MALICIOUS", "reason": "Override attempt + high drift"}
-        else:
-            out = {"risk": "SUSPICIOUS", "reason": "Override attempt detected (first occurrence)"}
+    # Strong ML malicious
+    if ml_label == "malicious" and ml_conf >= ML_HIGH_CONF:
+        out = {"risk": "MALICIOUS", "reason": "High-confidence ML malicious"}
         return _attach_debug(out, debug, primary, meta, drift, current_risk)
 
-    # Sustained high risk => malicious
-    if rs > SUSPICIOUS_MAX:
-        out = {"risk": "MALICIOUS", "reason": "Sustained high risk across conversation (aggregated)"}
+    # Suspicious ML or drift escalation
+    if ml_label == "suspicious" or rs >= SAFE_MAX or streak >= 3:
+        out = {"risk": "SUSPICIOUS", "reason": "ML or drift-based suspicion"}
         return _attach_debug(out, debug, primary, meta, drift, current_risk)
 
-    # High drift without override => suspicious (task switching)
-    if meta == "none" and drift >= 0.6:
-        out = {"risk": "SUSPICIOUS", "reason": "High intent drift (task change) without override intent"}
-        return _attach_debug(out, debug, primary, meta, drift, current_risk)
-
-    # aggregated moderate risk or streak => suspicious
-    if rs >= SAFE_MAX or streak >= 3:
-        out = {"risk": "SUSPICIOUS", "reason": "Moderate risk or repeated drift (aggregated escalation)"}
-        return _attach_debug(out, debug, primary, meta, drift, current_risk)
-
-    out = {"risk": "SAFE", "reason": "Intent stable (low drift and low aggregated risk)"}
+    out = {"risk": "SAFE", "reason": "Low risk after hybrid analysis"}
     return _attach_debug(out, debug, primary, meta, drift, current_risk)
 
 
 def reset_state():
-    """Call this at start of a new chat/session (or when pipeline resets)."""
     _STATE["risk_state"] = 0.0
     _STATE["override_hits"] = 0
     _STATE["suspicious_streak"] = 0
     _STATE["turns"] = 0
 
 
-def _attach_debug(out: Dict[str, Any], debug: bool, primary: str, meta: str, drift: float, current_risk: float):
+def _attach_debug(
+    out: Dict[str, Any],
+    debug: bool,
+    primary: str,
+    meta: str,
+    drift: float,
+    current_risk: float
+):
     if debug:
         out["_debug"] = {
             "primary_intent": primary,

@@ -1,21 +1,19 @@
 """
 Intent Detection Module
 
-This module extracts structured security signals from user prompts:
-- Primary Intent (what the user asks)
-- Meta Intent (prompt override attempts)
+Extracts structured security signals from user prompts:
+- Primary Intent
+- Meta Intent (override attempts)
 - Intent Drift (multi-turn goal change)
 - Obfuscation Score (hidden attack signals)
-
-These signals help downstream modules detect prompt injection,
-role manipulation, and multi-step attacks.
 """
 
+from typing import Dict, Any, List
 from modules.obfuscation_detector import process as detect_obfuscation
 
 PRIMARY_KEYWORDS = {
     "code_review": ["review", "audit", "vulnerability", "security"],
-    "policy_check": ["policy", "compliance", "rule", "violate"]
+    "policy_check": ["policy", "compliance", "rule", "violate"],
 }
 
 META_PATTERNS = [
@@ -24,9 +22,8 @@ META_PATTERNS = [
     "bypass",
     "override",
     "system prompt",
-    "forget your rules"
+    "forget your rules",
 ]
-
 
 def detect_primary_intent(text: str) -> str:
     t = text.lower()
@@ -35,7 +32,6 @@ def detect_primary_intent(text: str) -> str:
             return intent
     return "unknown"
 
-
 def detect_meta_intent(text: str) -> str:
     t = text.lower()
     for p in META_PATTERNS:
@@ -43,8 +39,7 @@ def detect_meta_intent(text: str) -> str:
             return "override_attempt"
     return "none"
 
-
-def compute_drift(history, current_intent: str) -> float:
+def compute_drift(history: List[Dict[str, Any]], current_intent: str) -> float:
     if not history:
         return 0.0
 
@@ -67,23 +62,24 @@ def compute_drift(history, current_intent: str) -> float:
 
     return 0.7
 
+def detect_intent(text: str, history: List[Dict[str, Any]], debug: bool = False) -> Dict[str, Any]:
+    clean_text = (text or "").strip()
 
-def detect_intent(text, history, debug=False):
-    primary = detect_primary_intent(text)
-    meta = detect_meta_intent(text)
+    primary = detect_primary_intent(clean_text)
+    meta = detect_meta_intent(clean_text)
     drift = compute_drift(history, primary)
 
-    obf = detect_obfuscation(text, history)
+    obf = detect_obfuscation(clean_text, history)
 
     result = {
-        "output": text,
+        "output": clean_text,
         "signals": {
             "primary_intent": primary,
             "meta_intent": meta,
             "intent_drift": drift,
             "obfuscation_score": obf["obfuscation_score"],
-            "obfuscation_reason": obf["reason"]
-        }
+            "obfuscation_reason": obf["reason"],
+        },
     }
 
     if debug:
@@ -91,7 +87,6 @@ def detect_intent(text, history, debug=False):
 
     return result
 
-
-# 🔒 Interface freeze
-def process(text, history):
+# 🔒 Interface freeze (used by app.py)
+def process(text: str, history: List[Dict[str, Any]]) -> Dict[str, Any]:
     return detect_intent(text, history)

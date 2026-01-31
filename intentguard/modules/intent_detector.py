@@ -1,4 +1,17 @@
-# module/intent_detector.py
+"""
+Intent Detection Module
+
+This module extracts structured security signals from user prompts:
+- Primary Intent (what the user asks)
+- Meta Intent (prompt override attempts)
+- Intent Drift (multi-turn goal change)
+- Obfuscation Score (hidden attack signals)
+
+These signals help downstream modules detect prompt injection,
+role manipulation, and multi-step attacks.
+"""
+
+from modules.obfuscation_detector import process as detect_obfuscation
 
 PRIMARY_KEYWORDS = {
     "code_review": ["review", "audit", "vulnerability", "security"],
@@ -14,42 +27,71 @@ META_PATTERNS = [
     "forget your rules"
 ]
 
-def detect_primary_intent(text):
+
+def detect_primary_intent(text: str) -> str:
     t = text.lower()
     for intent, keywords in PRIMARY_KEYWORDS.items():
         if any(k in t for k in keywords):
             return intent
     return "unknown"
 
-def detect_meta_intent(text):
+
+def detect_meta_intent(text: str) -> str:
     t = text.lower()
     for p in META_PATTERNS:
         if p in t:
             return "override_attempt"
     return "none"
 
-def compute_drift(history, current_intent):
+
+def compute_drift(history, current_intent: str) -> float:
     if not history:
         return 0.0
-    initial_intent = history[0].get("primary_intent", current_intent)
-    if initial_intent == current_intent:
+
+    previous_intents = [
+        h.get("primary_intent")
+        for h in history
+        if isinstance(h, dict) and "primary_intent" in h
+    ]
+
+    if not previous_intents:
         return 0.0
-    if "unknown" in (initial_intent, current_intent):
+
+    last_intent = previous_intents[-1]
+
+    if last_intent == current_intent:
+        return 0.0
+
+    if "unknown" in (last_intent, current_intent):
         return 0.3
+
     return 0.7
 
-def detect_intent(text, history):
+
+def detect_intent(text, history, debug=False):
     primary = detect_primary_intent(text)
     meta = detect_meta_intent(text)
     drift = compute_drift(history, primary)
-    return {
+
+    obf = detect_obfuscation(text, history)
+
+    result = {
         "output": text,
         "signals": {
             "primary_intent": primary,
             "meta_intent": meta,
-            "intent_drift": drift
+            "intent_drift": drift,
+            "obfuscation_score": obf["obfuscation_score"],
+            "obfuscation_reason": obf["reason"]
         }
     }
+
+    if debug:
+        print("Intent Signals:", result["signals"])
+
+    return result
+
+
+# 🔒 Interface freeze
 def process(text, history):
     return detect_intent(text, history)
-

@@ -1,24 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>LLM Security</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Prompt Security Defense</title>
   <link rel="stylesheet" href="popup.css">
 </head>
 <body>
   <div class="container">
-    <h2>🛡️ LLM Prompt Defense</h2>
-    
+    <h2>
+      <span>🛡️</span>
+      <span>LLM Prompt Defense</span>
+    </h2>
+
     <textarea 
-      id="promptInput" 
-      placeholder="Enter your prompt here to check for injection attacks..."></textarea>
-    
-    <button id="analyzeBtn">Analyze Prompt</button>
-    
-    <div id="result" class="result hidden"></div>
-    
-    <div id="metrics" class="metrics hidden"></div>
+      id="promptInput"
+      placeholder="Enter your prompt here to check for injection attacks..."
+      aria-label="Prompt input for security analysis"
+      spellcheck="false"
+    ></textarea>
+
+    <button id="analyzeBtn" aria-label="Analyze prompt for security threats">
+      Analyze Prompt
+    </button>
+
+    <div id="result" class="result hidden" role="alert" aria-live="polite"></div>
+    <div id="metrics" class="metrics hidden" aria-live="polite"></div>
   </div>
-  
+
   <script src="popup.js"></script>
 </body>
 </html>

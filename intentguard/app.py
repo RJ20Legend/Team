@@ -34,16 +34,27 @@ def chat(input: UserInput):
 
 @app.post("/analyze")
 def analyze(input: AnalyzeInput):
+    try:
+        p = preprocess(input.user_input, input.history)
+        i = detect_intent(p["clean_text"], input.history)
+        c = classify(i)
+        d = defend(p["clean_text"], c)
 
-    p = preprocess(input.user_input, input.history)
-    i = detect_intent(p["clean_text"], input.history)
-    c = classify(i)
-    d = defend(p["clean_text"], c)
+        print("INPUT:", input.user_input)
+        print("RISK:", c["risk"])
+        print("ACTION:", d["action"])
 
-    llm_response = "Security review response here"
+        return {
+            "classification": c["risk"],
+            "defense_action": d["action"],
+            "llm_response": "Security review response here"
+        }
 
-    return {
-        "classification": c["risk"],
-        "defense_action": d["action"],
-        "llm_response": llm_response
-    }
+    except Exception as e:
+        print("ERROR:", e)
+        return {
+            "classification": "ERROR",
+            "defense_action": "BLOCK",
+            "llm_response": "Error handled safely"
+        }
+

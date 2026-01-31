@@ -1,4 +1,15 @@
-# modules/intent_detector.py
+"""
+Intent Detection Module
+
+This module extracts structured security signals from user prompts:
+- Primary Intent (what the user asks)
+- Meta Intent (prompt override attempts)
+- Intent Drift (multi-turn goal change)
+- Obfuscation Score (hidden attack signals)
+
+These signals help downstream modules detect prompt injection,
+role manipulation, and multi-step attacks.
+"""
 
 from modules.obfuscation_detector import process as detect_obfuscation
 
@@ -62,7 +73,6 @@ def detect_intent(text, history, debug=False):
     meta = detect_meta_intent(text)
     drift = compute_drift(history, primary)
 
-    # Obfuscation detection
     obf = detect_obfuscation(text, history)
 
     result = {
@@ -82,6 +92,6 @@ def detect_intent(text, history, debug=False):
     return result
 
 
-# === Interface freeze wrapper ===
+# 🔒 Interface freeze
 def process(text, history):
     return detect_intent(text, history)

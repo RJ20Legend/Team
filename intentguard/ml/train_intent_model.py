@@ -5,6 +5,7 @@ import re
 import joblib
 import pandas as pd
 
+from sklearn.pipeline import FeatureUnion
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
@@ -24,22 +25,25 @@ def load_jsonl(path):
 
 def clean_text(text: str) -> str:
     """
-    Light cleaning (same philosophy as fake news detector).
+    Light cleaning.
+    DO NOT remove symbols aggressively — scripts need them.
     """
     text = text.lower()
     text = re.sub(r"\s+", " ", text)
-    text = re.sub(r"[^\w\s]", "", text)
     return text.strip()
 
 
 # ----------------------------
 # Load datasets
 # ----------------------------
-benign = load_jsonl("../data/benign_prompts_500.jsonl")
-suspicious = load_jsonl("../data/suspicious_prompts_600.jsonl")
-malicious = load_jsonl("../data/malicious_prompts_500.jsonl")
+benign = load_jsonl("../data/benign_9000.jsonl")
+suspicious = load_jsonl("../data/merged_suspicious_dataset.jsonl")
+malicious = load_jsonl("../data/merged_final.jsonl")
 
 df = pd.DataFrame(benign + suspicious + malicious)
+
+# ✅ Column safety (VERY IMPORTANT)
+TEXT_COL = "text" if "text" in df.columns else "prompt"
 
 label_map = {
     "benign": 0,
@@ -48,7 +52,7 @@ label_map = {
 }
 
 df["label_id"] = df["label"].map(label_map)
-df["clean_text"] = df["prompt"].apply(clean_text)
+df["clean_text"] = df[TEXT_COL].astype(str).apply(clean_text)
 
 X = df["clean_text"]
 y = df["label_id"]
@@ -58,13 +62,27 @@ print(df["label"].value_counts())
 
 
 # ----------------------------
-# Vectorization
+# Vectorization (WORD + CHAR)
 # ----------------------------
-vectorizer = TfidfVectorizer(
-    ngram_range=(1, 2),
-    max_features=6000,
-    min_df=3
-)
+vectorizer = FeatureUnion([
+    (
+        "word",
+        TfidfVectorizer(
+            ngram_range=(1, 2),
+            max_features=6000,
+            min_df=2,
+            lowercase=True
+        )
+    ),
+    (
+        "char",
+        TfidfVectorizer(
+            analyzer="char",
+            ngram_range=(3, 5),
+            max_features=8000
+        )
+    )
+])
 
 X_vec = vectorizer.fit_transform(X)
 
@@ -85,8 +103,9 @@ X_train, X_test, y_train, y_test = train_test_split(
 # Model
 # ----------------------------
 model = LogisticRegression(
-    max_iter=1000,
-    class_weight="balanced"
+    max_iter=1500,
+    class_weight="balanced",
+    n_jobs=-1
 )
 
 model.fit(X_train, y_train)
@@ -102,7 +121,7 @@ print(
     classification_report(
         y_test,
         y_pred,
-        target_names=label_map.keys()
+        target_names=["benign", "suspicious", "malicious"]
     )
 )
 

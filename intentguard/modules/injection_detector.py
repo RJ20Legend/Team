@@ -38,11 +38,12 @@ ROLEPLAY_PATTERNS = [
 ]
 
 BOUNDARY_SPOOF_PATTERNS = [
-    r"\b(system|assistant|developer|user)\s*:",
-    r"<\s*(system|assistant|developer|user)\s*>",
-    r"#+\s*(system|assistant)\s+prompt",
+    r"^(system|assistant|developer|user)\s*:",        # ONLY at start
+    r"^<\s*(system|assistant|developer|user)\s*>",   # ONLY at start
+    r"^#+\s*(system|assistant)\s+prompt",
     r"\bend of (system|assistant) message\b"
 ]
+
 
 IMPERATIVE_VERBS = [
     "ignore", "follow", "execute", "reveal",

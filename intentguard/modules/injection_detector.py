@@ -1,29 +1,34 @@
-# modules/injection_detector.py
+"""
+Injection Phrase Detection Module
+
+Detects explicit prompt injection attempts by matching
+known override and role-manipulation phrases.
+
+Outputs a numeric injection score and matched patterns
+for explainable classification.
+"""
 
 INJECTION_PATTERNS = [
     "ignore previous instructions",
-    "ignore all instructions",
     "you are now system",
-    "you are the system",
-    "reveal hidden policy",
     "reveal system prompt",
     "bypass safeguards",
-    "bypass safety",
     "override rules",
-    "forget your role",
-    "act as system"
+    "forget your role"
 ]
 
-def process(text, history=None):
-    """
-    Detect direct prompt injection attempts.
-    """
-    t = text.lower()
-    matched = [p for p in INJECTION_PATTERNS if p in t]
 
-    injection_score = min(1.0, 0.2 * len(matched))
+def process(text, history=None):
+    t = text.lower()
+    matched = []
+
+    for p in INJECTION_PATTERNS:
+        if p in t:
+            matched.append(p)
+
+    score = min(len(matched) * 0.4, 1.0)
 
     return {
-        "injection_score": injection_score,
+        "injection_score": score,
         "matched_patterns": matched
     }

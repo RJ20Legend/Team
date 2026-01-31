@@ -1,4 +1,14 @@
-# modules/obfuscation_detector.py
+"""
+Obfuscation Detection Module
+
+Detects hidden or encoded prompt injection attempts using:
+- Unicode normalization differences
+- Base64-like encodings
+- Spaced-out text patterns
+- Excessive special character usage
+
+Returns a numeric obfuscation score with human-readable reasons.
+"""
 
 import re
 import unicodedata
@@ -11,23 +21,19 @@ def process(text, history=None):
     reasons = []
     score = 0.0
 
-    # Unicode normalization check
     normalized = unicodedata.normalize("NFKC", text)
     if normalized != text:
         reasons.append("Unicode normalization difference")
         score += 0.3
 
-    # Base64-like detection
     if BASE64_REGEX.search(text):
         reasons.append("Base64-like encoded content")
         score += 0.4
 
-    # Spaced-out text (i g n o r e)
     if SPACED_WORD_REGEX.search(text.lower()):
         reasons.append("Suspicious spaced-out text")
         score += 0.3
 
-    # Excessive special characters
     special_ratio = sum(not c.isalnum() for c in text) / max(len(text), 1)
     if special_ratio > 0.3:
         reasons.append("High special character ratio")

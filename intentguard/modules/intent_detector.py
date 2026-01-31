@@ -50,3 +50,6 @@ def detect_intent(text, history):
             "intent_drift": drift
         }
     }
+def process(text, history):
+    return detect_intent(text, history)
+

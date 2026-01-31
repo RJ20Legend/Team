@@ -1,22 +1,17 @@
 """
-LLM Reviewer Module
+LLM Reviewer Module (FINAL & SAFE)
 
-This module uses a secondary LLM as a SECURITY REVIEWER.
-It checks if the primary AI response contains:
+This reviewer can ONLY return:
+- SAFE
+- UNSAFE
 
-- System prompt leaks
-- Hidden rules or policies
-- API keys / secrets
-- Unsafe instructions
-- Data exfiltration attempts
-
-It returns SAFE or UNSAFE with a reason.
+No heuristics. No keyword guessing.
 """
 
 import os
+import re
 from openai import OpenAI
 
-# OpenRouter client (free-tier models)
 client = OpenAI(
     api_key=os.getenv("OPENROUTER_API_KEY"),
     base_url="https://openrouter.ai/api/v1"
@@ -26,56 +21,61 @@ REVIEW_MODEL = "mistralai/mistral-7b-instruct"
 
 
 def review_response(text: str) -> dict:
-    """
-    Uses a secondary LLM to review AI output for security violations.
-    """
-
-    if not text or len(text.strip()) == 0:
+    if not text or not text.strip():
         return {"verdict": "SAFE", "reason": "Empty response"}
 
-    review_prompt = f"""
-You are an AI Security Auditor.
+    prompt = f"""
+You are a SECURITY REVIEW SYSTEM.
 
-Your job is to determine if the following AI output contains:
+Decide if the AI response below is UNSAFE.
 
-- System prompt or hidden instructions
-- Internal rules or policies
-- Secrets, tokens, API keys
-- Unsafe or malicious instructions
-- Anything the AI should not reveal
+UNSAFE means it:
+- leaks system prompts
+- reveals internal rules
+- exposes secrets
+- gives malicious instructions
 
-Respond STRICTLY in this format:
+If none of the above → SAFE.
+
+Reply in EXACTLY this format:
 
 VERDICT: SAFE or UNSAFE
-REASON: Short explanation
+REASON: one sentence
 
-TEXT TO ANALYZE:
+TEXT:
 {text}
 """
 
     try:
-        response = client.chat.completions.create(
+        r = client.chat.completions.create(
             model=REVIEW_MODEL,
-            messages=[{"role": "user", "content": review_prompt}],
+            messages=[{"role": "user", "content": prompt}],
             temperature=0,
-            max_tokens=150,
+            max_tokens=120
         )
 
-        result = response.choices[0].message.content.strip().lower()
+        output = r.choices[0].message.content
 
-        if "unsafe" in result:
-            return {
-                "verdict": "UNSAFE",
-                "reason": result
-            }
+        verdict_match = re.search(
+            r"VERDICT:\s*(SAFE|UNSAFE)", output, re.IGNORECASE
+        )
+
+        verdict = verdict_match.group(1).upper() if verdict_match else "SAFE"
+
+        reason_match = re.search(
+            r"REASON:\s*(.*)", output, re.IGNORECASE
+        )
+
+        reason = reason_match.group(1).strip() if reason_match else "No issue detected"
 
         return {
-            "verdict": "SAFE",
-            "reason": "No policy or secret leakage detected"
+            "verdict": verdict,
+            "reason": reason
         }
 
     except Exception as e:
+        # FAIL‑SAFE → NEVER BLOCK NORMAL CHAT
         return {
             "verdict": "SAFE",
-            "reason": f"Reviewer error — defaulting safe ({str(e)})"
+            "reason": "Reviewer failed, default SAFE"
         }

@@ -1,70 +1,63 @@
+console.log("[background] Service worker started");
+
 const BACKEND_URL = "http://127.0.0.1:8000/analyze";
-const REQUEST_TIMEOUT = 10000; // 10 seconds
+const REQUEST_TIMEOUT = 10000; // 10s
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg?.type === "PING") {
+    console.log("[background] PING received from tab:", sender.tab?.id);
+    sendResponse({ ok: true, pong: true });
+    return true;
+  }
+
   if (msg?.type !== "ANALYZE_PROMPT") return;
 
-  console.log("[background] ANALYZE_PROMPT received", { 
-    from: sender.tab?.id, 
-    len: (msg.user_input || "").length 
-  });
+  console.log("[background] ANALYZE_PROMPT", { len: msg.user_input?.length });
 
-  // Create timeout promise
-  const timeoutPromise = new Promise((_, reject) => {
-    setTimeout(() => reject(new Error("Request timeout")), REQUEST_TIMEOUT);
-  });
+  let responded = false;
+  const safeSend = (payload) => {
+    if (responded) return;
+    responded = true;
+    sendResponse(payload);
+  };
 
-  // Create fetch promise
-  const fetchPromise = fetch(BACKEND_URL, {
+  // fetch with timeout
+  const fetchWithTimeout = (url, options, timeoutMs) =>
+    new Promise((resolve, reject) => {
+      const timer = setTimeout(() => reject(new Error("TIMEOUT")), timeoutMs);
+      fetch(url, options)
+        .then(res => {
+          clearTimeout(timer);
+          resolve(res);
+        })
+        .catch(err => {
+          clearTimeout(timer);
+          reject(err);
+        });
+    });
+
+  fetchWithTimeout(BACKEND_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ user_input: msg.user_input })
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Backend error: ${res.status} ${res.statusText}`);
-      }
+  }, REQUEST_TIMEOUT)
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return res.json();
     })
-    .then((data) => {
-      console.log("[background] analysis OK", data);
-      
-      // Validate response structure
-      if (!data.classification || !data.defense_action) {
-        throw new Error("Invalid response format from backend");
-      }
-      
-      sendResponse({ ok: true, data });
+    .then(data => {
+      console.log("[background] OK", data);
+      safeSend({ ok: true, data });
     })
-    .catch((e) => {
-      console.error("[background] analysis error", e);
-      sendResponse({ 
-        ok: false, 
-        error: String(e),
-        errorType: e.name === "TypeError" ? "NETWORK_ERROR" : "BACKEND_ERROR"
-      });
+    .catch(err => {
+      console.error("[background] ERROR", err);
+      const errorType = err.message === "TIMEOUT"
+        ? "TIMEOUT"
+        : err.name === "TypeError"
+        ? "NETWORK_ERROR"
+        : "BACKEND_ERROR";
+      safeSend({ ok: false, errorType });
     });
 
-  // Race between fetch and timeout
-  Promise.race([fetchPromise, timeoutPromise])
-    .catch((e) => {
-      console.error("[background] timeout or error", e);
-      sendResponse({ 
-        ok: false, 
-        error: "Request timeout - backend not responding",
-        errorType: "TIMEOUT"
-      });
-    });
-
-  return true; // keep message channel open for async sendResponse
-});
-
-// Handle extension installation/update
-chrome.runtime.onInstalled.addListener((details) => {
-  if (details.reason === "install") {
-    console.log("[background] Extension installed");
-    // You could open a welcome page or set default settings here
-  } else if (details.reason === "update") {
-    console.log("[background] Extension updated to version", chrome.runtime.getManifest().version);
-  }
+  return true; // keep message channel open for async
 });

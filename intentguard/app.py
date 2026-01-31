@@ -1,6 +1,7 @@
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
 from pydantic import BaseModel
+from typing import Optional
 
 from modules.preprocessor import process as preprocess
 from modules.intent_detector import process as detect_intent
@@ -23,7 +24,7 @@ class UserInput(BaseModel):
 
 class AnalyzeInput(BaseModel):
     user_input: str
-    history: list = []
+    history: Optional[list] = []  # Make it truly optional
 
 @app.post("/chat")
 def chat(input: UserInput):
@@ -35,8 +36,11 @@ def chat(input: UserInput):
 @app.post("/analyze")
 def analyze(input: AnalyzeInput):
     try:
-        p = preprocess(input.user_input, input.history)
-        i = detect_intent(p["clean_text"], input.history)
+        # Ensure history is always a list (handle None case)
+        history = input.history if input.history is not None else []
+        
+        p = preprocess(input.user_input, history)
+        i = detect_intent(p["clean_text"], history)
         c = classify(i)
         d = defend(p["clean_text"], c)
 
@@ -47,14 +51,20 @@ def analyze(input: AnalyzeInput):
         return {
             "classification": c["risk"],
             "defense_action": d["action"],
-            "llm_response": "Security review response here"
+            "cleaned_input": p.get("clean_text", input.user_input),  # Add this
+            "risk_score": c.get("score", 0),  # Add this if available
+            "llm_response": f"Detected: {c['risk']} - Action: {d['action']}"
         }
 
     except Exception as e:
         print("ERROR:", e)
+        import traceback
+        traceback.print_exc()  # Better error logging
+        
         return {
             "classification": "ERROR",
             "defense_action": "BLOCK",
-            "llm_response": "Error handled safely"
+            "cleaned_input": "",
+            "risk_score": 5,
+            "llm_response": f"Error during analysis: {str(e)}"
         }
-

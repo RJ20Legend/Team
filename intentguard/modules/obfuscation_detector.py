@@ -16,7 +16,7 @@ BASE64_REGEX = re.compile(r"(?:[A-Za-z0-9+/]{20,}={0,2})")
 SPACED_WORD_REGEX = re.compile(r"(?:\b\w\s){4,}\w")
 
 
-def process(text: Optional[str], history=None) -> Dict[str, str]:
+def process(text: Optional[str], history=None) -> Dict[str, object]:
     reasons: List[str] = []
     score = 0.0
 
@@ -42,5 +42,22 @@ def process(text: Optional[str], history=None) -> Dict[str, str]:
 
     return {
         "obfuscation_score": min(score, 1.0),
-        "reason": ", ".join(reasons) if reasons else "None",
+        "techniques": reasons,
+    }
+
+
+def detect(text: Optional[str]) -> Dict[str, object]:
+    """
+    Classifier-facing API.
+
+    Returns:
+    {
+      "score": float (0..1),
+      "techniques": List[str]
+    }
+    """
+    res = process(text)
+    return {
+        "score": res["obfuscation_score"],
+        "techniques": res["techniques"],
     }

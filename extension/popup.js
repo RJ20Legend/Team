@@ -11,67 +11,47 @@ async function analyzePrompt() {
   const analyzeBtn = document.getElementById('analyzeBtn');
   const resultDiv = document.getElementById('result');
   const metricsDiv = document.getElementById('metrics');
-  
+
   const userPrompt = promptInput.value.trim();
-  
+
   if (!userPrompt) {
     alert('Please enter a prompt to analyze');
     return;
   }
-  
-  // Show loading state
+
+  // Loading state
   analyzeBtn.disabled = true;
   analyzeBtn.textContent = 'Analyzing...';
   resultDiv.classList.add('hidden');
   metricsDiv.classList.add('hidden');
-  
+
   try {
-    // Use consistent JSON format (same as background.js)
     const response = await fetch('http://127.0.0.1:8000/analyze', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ user_input: userPrompt })
     });
-    
+
     if (!response.ok) {
-      throw new Error(`Backend error: ${response.status} ${response.statusText}`);
+      throw new Error(`Backend error: ${response.status}`);
     }
-    
+
     const data = await response.json();
-    
-    // Validate response structure
+
     if (!data.classification || !data.defense_action) {
-      throw new Error('Invalid response format from backend');
+      throw new Error('Invalid backend response');
     }
-    
+
     displayResult(data);
-    
+
   } catch (error) {
     console.error('Analysis error:', error);
-    
-    let errorMessage = '';
-    if (error.message.includes('Failed to fetch')) {
-      errorMessage = `
-        <strong>⚠️ Backend Connection Failed</strong><br><br>
-        Make sure your Python server is running:<br>
-        <code>uvicorn main:app --reload --host 127.0.0.1 --port 8000</code>
-        <br><br>
-        <strong>Common issues:</strong><br>
-        • Backend server not started<br>
-        • Wrong port (should be 8000)<br>
-        • CORS not configured<br>
-        • Firewall blocking connection
-      `;
-    } else {
-      errorMessage = `
-        <strong>⚠️ Error:</strong><br>
-        ${error.message}
-      `;
-    }
-    
-    resultDiv.innerHTML = errorMessage;
+
+    resultDiv.innerHTML = `
+      <strong>⚠️ Connection Error</strong><br><br>
+      Make sure backend is running on:<br>
+      <code>http://127.0.0.1:8000</code>
+    `;
     resultDiv.className = 'result malicious';
     resultDiv.classList.remove('hidden');
   } finally {
@@ -83,82 +63,71 @@ async function analyzePrompt() {
 function displayResult(data) {
   const resultDiv = document.getElementById('result');
   const metricsDiv = document.getElementById('metrics');
-  
-  const riskClass = data.classification.toLowerCase();
-  
-  // Status icons
-  const statusIcons = {
-    'safe': '✅',
-    'suspicious': '⚠️',
-    'malicious': '🚫'
-  };
-  
-  const actionIcons = {
-    'ALLOW': '✅',
-    'SANITIZE': '⚠️',
-    'BLOCK': '🚫'
-  };
-  
-  const icon = statusIcons[riskClass] || '🛡️';
-  const actionIcon = actionIcons[data.defense_action] || '•';
-  
+
+  const isBlocked = data.defense_action === "BLOCK";
+
+  // Status styling
+  const statusIcon = isBlocked ? "🚫" : "✅";
+  const statusColor = isBlocked ? "malicious" : "safe";
+
   resultDiv.innerHTML = `
-    <div style="font-size: 16px; margin-bottom: 12px;">
-      <strong>${icon} Classification:</strong> 
-      <span style="font-size: 18px; font-weight: 700;">${data.classification}</span>
+    <div style="font-size:16px;margin-bottom:12px;">
+      <strong>${statusIcon} Security Decision:</strong>
+      <span style="font-size:18px;font-weight:700;">
+        ${data.defense_action}
+      </span>
     </div>
-    <div style="margin: 10px 0; padding: 8px; background: rgba(0,0,0,0.05); border-radius: 6px;">
-      <strong>${actionIcon} Defense Action:</strong> 
-      <span style="font-weight: 600;">${data.defense_action}</span>
+
+    <div style="margin:10px 0;">
+      <strong>🧠 Risk Classification:</strong>
+      <code>${data.classification}</code>
     </div>
-    ${data.cleaned_input ? `
-      <div style="margin: 10px 0;">
-        <strong>🔧 Cleaned Input:</strong><br>
-        <div style="margin-top: 6px; padding: 10px; background: rgba(0,0,0,0.03); border-radius: 6px; max-height: 120px; overflow-y: auto;">
-          <code style="white-space: pre-wrap; word-break: break-word;">${escapeHtml(data.cleaned_input)}</code>
-        </div>
+
+    ${data.review_verdict ? `
+      <div style="margin:10px 0;">
+        <strong>🤖 Reviewer LLM Verdict:</strong>
+        <code>${data.review_verdict}</code>
       </div>
     ` : ''}
-    ${data.llm_response ? `
-      <div style="margin: 10px 0;">
-        <strong>💬 LLM Analysis:</strong><br>
-        <div style="margin-top: 6px; padding: 10px; background: rgba(0,0,0,0.03); border-radius: 6px; max-height: 120px; overflow-y: auto; font-size: 13px; line-height: 1.5;">
-          ${escapeHtml(data.llm_response)}
-        </div>
+
+    <div style="margin:10px 0;">
+      <strong>💬 Final AI Response:</strong><br>
+      <div style="margin-top:6px;padding:10px;background:rgba(0,0,0,0.05);border-radius:6px;max-height:140px;overflow-y:auto;font-size:13px;">
+        ${escapeHtml(data.llm_response || "No response")}
       </div>
-    ` : ''}
+    </div>
   `;
-  
-  resultDiv.className = `result ${riskClass}`;
+
+  resultDiv.className = `result ${statusColor}`;
   resultDiv.classList.remove('hidden');
-  
+
+  // Metrics (shows security architecture)
   metricsDiv.innerHTML = `
     <div class="metric-item">
-      <strong>📊 Risk Score:</strong> ${data.risk_score || 'N/A'}/5
+      <strong>🛡 Security Layers Active:</strong> 3
     </div>
-    ${data.latency_seconds ? `
-      <div class="metric-item">
-        <strong>⏱️ Processing Time:</strong> ${(data.latency_seconds).toFixed(3)}s
-      </div>
-    ` : ''}
-    ${data.model_used ? `
-      <div class="metric-item">
-        <strong>🤖 Model:</strong> ${data.model_used}
-      </div>
-    ` : ''}
+    <div class="metric-item">
+      <strong>Layer 1:</strong> Input Firewall
+    </div>
+    <div class="metric-item">
+      <strong>Layer 2:</strong> AI Reviewer LLM
+    </div>
+    <div class="metric-item">
+      <strong>Layer 3:</strong> Output Filter
+    </div>
   `;
+
   metricsDiv.classList.remove('hidden');
 }
 
-// Utility function to escape HTML and prevent XSS
+// Prevent XSS
 function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
 }
 
-// Add keyboard shortcut info
 document.addEventListener('DOMContentLoaded', () => {
   const promptInput = document.getElementById('promptInput');
-  promptInput.placeholder = 'Enter your prompt here to check for injection attacks...\n\nTip: Press Ctrl+Enter to analyze';
+  promptInput.placeholder = 'Enter prompt to test multi-layer AI security...\n\nTip: Press Ctrl+Enter to analyze';
 });

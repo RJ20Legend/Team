@@ -24,6 +24,10 @@ def load_jsonl(path):
 
 
 def clean_text(text: str) -> str:
+    """
+    Light cleaning.
+    DO NOT remove symbols aggressively — scripts need them.
+    """
     text = text.lower()
     text = re.sub(r"\s+", " ", text)
     return text.strip()

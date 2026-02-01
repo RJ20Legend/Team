@@ -17,7 +17,9 @@ from modules.main_llm import generate_response
 from modules.llm_reviewer import review_response
 from modules.output_filter import verify_llm_output
 
-app = FastAPI()
+    try:
+        # 🔥 DEMO-SAFE: reset state per request
+        reset_state()
 
 app.add_middleware(
     CORSMiddleware,

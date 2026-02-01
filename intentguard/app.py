@@ -1,3 +1,32 @@
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import Optional, List, Dict
+import time
+
+from modules.system_access_detector import process as detect_system_access
+from modules.preprocessor import process as preprocess
+from modules.intent_detector import process as detect_intent
+from modules.classifier import process as classify, reset_state
+from modules.defense import process as defend
+
+# 🚨 THIS MUST COME BEFORE ANY @app decorators
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Schemas
+class AnalyzeInput(BaseModel):
+    user_input: str
+    history: Optional[List[Dict]] = None
+
+
+
 @app.post("/analyze")
 def analyze(input: AnalyzeInput):
     start_time = time.time()
@@ -54,5 +83,5 @@ def analyze(input: AnalyzeInput):
             "cleaned_input": "",
             "risk_score": 1.0,
             "latency_seconds": round(time.time() - start_time, 3),
-            "reason": f"Internal error – blocked for safety: {str(e)}",
+            "reason": f"Internal error - blocked for safety: {str(e)}",
         }
